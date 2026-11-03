@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  var p = location.pathname;
+  if (p.charAt(p.length - 1) !== '/') p += '/';
+  document.write('<base href="' + p + '">');
+</script>
+<title>Moonshot AI GitHub Repository Atlas</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+  :root {
+    --bg: #0c0d12;
+    --surface: #14161e;
+    --surface2: #1a1d27;
+    --surface3: #222633;
+    --border: #323644;
+    --text: #f4f1ea;
+    --text-muted: #b7b0a4;
+    --brand: #f38020;
+    --blue: #3b82f6;
+    --cyan: #22d3ee;
+    --green: #22c55e;
+    --orange: #f38020;
+    --red: #ef4444;
+    --pink: #f472b6;
+    --purple: #a78bfa;
+    --yellow: #fbbf24;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 85% -10%, rgba(243, 128, 32, 0.22), transparent 28rem),
+      radial-gradient(circle at 8% 4%, rgba(251, 191, 36, 0.1), transparent 26rem),
+      linear-gradient(180deg, #16120c 0%, var(--bg) 42rem);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    padding: 40px 24px 52px;
+  }
+
+  a { color: inherit; }
+
+  .header,
+  .search-panel,
+  .repo-section,
+  .footer {
+    max-width: 1480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 30px;
+    line-height: 1.15;
+    letter-spacing: -0.6px;
+  }
+
+  .logo-box {
+    width: 38px;
+    height: 38px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f38020, #ffbf5a);
+    color: #1a1208;
+    font-weight: 800;
+    box-shadow: 0 0 24px rgba(243, 128, 32, 0.32);
+  }
+
+  .page-header p {
+    max-width: 920px;
+    margin: 10px 0 0;
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  .metric-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .metric-card {
+    min-width: 148px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(17, 22, 26, 0.8);
+  }
+
+  .metric-card strong {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--text);
+  }
+
+  .metric-card span {
+    display: block;
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .jump-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-top: 18px;
+    align-items: flex-start;
+  }
+
+  .jump-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(17, 22, 26, 0.48);
+  }
+
+  .jump-group-label {
+    padding: 0 4px 0 2px;
+    color: var(--text-muted);
+    font: 700 10px 'JetBrains Mono', monospace;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+  }
+
+  .jump-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 10px;
+    background: rgba(17, 22, 26, 0.72);
+    color: var(--text);
+    text-decoration: none;
+    font: 700 11px 'JetBrains Mono', monospace;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+
+  .jump-group-clusters a {
+    border-color: rgba(243, 128, 32), 0.34);
+    background: rgba(243, 128, 32), 0.07);
+  }
+
+  .jump-group-other {
+    border-color: rgba(80, 230, 255, 0.22);
+    background: rgba(80, 230, 255, 0.045);
+  }
+
+  .jump-group-other a {
+    border-color: rgba(80, 230, 255, 0.36);
+    background: rgba(80, 230, 255, 0.08);
+  }
+
+  .jump-nav a:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+    background: rgba(243, 128, 32), 0.1);
+  }
+
+  .jump-group-other a:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(80, 230, 255, 0.12);
+  }
+
+  .jump-nav span {
+    color: var(--text-muted);
+    font-size: 10px;
+  }
+
+  .search-panel {
+    display: grid;
+    grid-template-columns: auto minmax(240px, 1fr) auto auto auto auto;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background:
+      radial-gradient(circle at top right, rgba(243, 128, 32), 0.14), transparent 24rem),
+      linear-gradient(180deg, rgba(23, 30, 35, 0.98), rgba(17, 22, 26, 0.98));
+  }
+
+  .search-label,
+  .sort-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .search-input {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(8, 11, 13, 0.95);
+    color: var(--text);
+    outline: none;
+    padding: 12px 14px;
+    font: 500 14px 'DM Sans', system-ui, sans-serif;
+  }
+
+  .search-input:focus {
+    border-color: rgba(243, 128, 32), 0.82);
+    box-shadow: 0 0 0 3px rgba(243, 128, 32), 0.14);
+  }
+
+  .button {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(8, 11, 13, 0.95);
+    color: var(--text);
+    padding: 12px 13px;
+    font: 700 12px 'JetBrains Mono', monospace;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .button:hover,
+  .button.active {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  .button:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  .repo-section {
+    margin-top: 34px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: end;
+    margin-bottom: 14px;
+  }
+
+  .section-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+  }
+
+  .section-header p {
+    margin: 6px 0 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .section-mark {
+    width: 10px;
+    height: 20px;
+    border-radius: 2px;
+    background: var(--brand);
+    display: inline-block;
+  }
+
+  .section-mark-blue { background: var(--blue); }
+  .section-mark-cyan { background: var(--cyan); }
+  .section-mark-orange { background: var(--orange); }
+  .section-mark-pink { background: var(--pink); }
+  .section-mark-purple { background: var(--purple); }
+  .section-mark-green { background: var(--green); }
+  .section-mark-red { background: var(--red); }
+
+  .count-pill,
+  .cluster-pill {
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 4px 8px;
+    color: var(--text-muted);
+    background: rgba(8, 11, 13, 0.45);
+    font: 600 11px 'JetBrains Mono', monospace;
+  }
+
+  .count-pill {
+    white-space: nowrap;
+  }
+
+  .cluster-pill {
+    white-space: normal;
+    line-height: 1.35;
+  }
+
+  .cluster-link {
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .cluster-link:hover {
+    color: var(--brand);
+    border-color: var(--brand);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    scrollbar-color: #33516d #08111d;
+    scrollbar-width: thin;
+  }
+
+  table {
+    width: 100%;
+    min-width: 1120px;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: fixed;
+  }
+
+  .traction-section table {
+    min-width: 1220px;
+  }
+
+  .col-repository { width: 22%; }
+  .col-language { width: 10%; }
+  .col-description { width: 48%; }
+  .col-github { width: 20%; }
+  .col-traction-repository { width: 17%; }
+  .col-traction-description { width: 48%; }
+  .col-traction-cluster { width: 12%; }
+  .col-traction-language { width: 8%; }
+  .col-traction-github { width: 15%; }
+
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 13px 14px;
+    text-align: left;
+    background: var(--surface2);
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font: 700 11px 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+  }
+
+  td {
+    padding: 13px 14px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(243, 128, 32), 0.045); }
+
+  .repo-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: 700 14px 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .repo-name a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .repo-name a:hover,
+  .repo-slug:hover {
+    color: var(--brand);
+    text-decoration: underline;
+  }
+
+  .repo-slug {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font: 500 11px 'JetBrains Mono', monospace;
+  }
+
+  .avatar {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: var(--surface3);
+  }
+
+  .tag,
+  .badge {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font: 700 11px 'JetBrains Mono', monospace;
+    background: rgba(149, 163, 154, 0.14);
+    color: var(--text-muted);
+  }
+
+  .tag-py { background: rgba(127, 186, 0, 0.14); color: var(--green); }
+  .tag-csharp { background: rgba(134, 97, 197, 0.18); color: var(--purple); }
+  .tag-c, .tag-cpp, .tag-cuda { background: rgba(69, 168, 255, 0.13); color: var(--blue); }
+  .tag-ts, .tag-js { background: rgba(250, 204, 21, 0.13); color: var(--yellow); }
+  .tag-go { background: rgba(80, 230, 255, 0.13); color: var(--cyan); }
+  .tag-shell { background: rgba(244, 114, 182, 0.13); color: var(--pink); }
+
+  .topic-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 7px;
+  }
+
+  .badge {
+    font-size: 10px;
+    color: #c0d1e4;
+  }
+
+  .keyword-button {
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .keyword-button:hover,
+  .keyword-button:focus-visible {
+    color: var(--brand);
+    background: rgba(243, 128, 32), 0.16);
+    outline: none;
+  }
+
+  .description-cell {
+    color: var(--text);
+    max-width: 54rem;
+  }
+
+  .github-cell {
+    min-width: 210px;
+  }
+
+  .gh-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px 10px;
+    align-items: center;
+  }
+
+  .star-count,
+  .fork-count,
+  .commit-count,
+  .metric-sm {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .star-count {
+    color: var(--yellow);
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  .fork-count,
+  .commit-count,
+  .metric-sm {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .last-updated {
+    display: block;
+    margin-top: 6px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+
+  .activity-block {
+    margin-top: 8px;
+  }
+
+  .activity-bar {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(149, 163, 154, 0.16);
+    overflow: hidden;
+  }
+
+  .activity-bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #f38020, #ffbf5a);
+  }
+
+  .activity-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 5px;
+    color: var(--text-muted);
+    font: 600 10px 'JetBrains Mono', monospace;
+  }
+
+  .number-cell,
+  .rank-cell,
+  .date-cell {
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .number-cell {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .score-cell {
+    color: var(--brand);
+  }
+
+  .date-cell {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .footer {
+    margin-top: 30px;
+    color: var(--text-muted);
+    font: 500 11px 'JetBrains Mono', monospace;
+    line-height: 1.7;
+  }
+
+  .footer a { color: var(--brand); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    body { padding: 26px 14px 40px; }
+    .page-title { font-size: 24px; }
+    .search-panel { grid-template-columns: 1fr; }
+    .button, .search-label, .sort-label { width: 100%; }
+    .section-header { display: block; }
+    .count-pill { margin-top: 10px; }
+  }
+</style>
+</head>
+<body>
+  <header class="header page-header">
+    <h1 class="page-title"><span class="logo-box">MO</span>Moonshot AI GitHub Repository Atlas</h1>
+    <p>Searchable snapshot of public repositories from Moonshot AI's <a href="https://github.com/orgs/moonshotai/repositories" target="_blank" rel="noreferrer">moonshotai organization</a>. Included repositories have more than 200 stars and were pushed within the last three months, since 2026-08-03.</p>
+    <div class="metric-strip" aria-label="Catalog summary">
+      <div class="metric-card"><strong>6</strong><span>qualified repos</span></div>
+      <div class="metric-card"><strong>23k</strong><span>combined stars</span></div>
+      <div class="metric-card"><strong>158</strong><span>commits in 30d</span></div>
+      <div class="metric-card"><strong>3</strong><span>technology clusters</span></div>
+    </div>
+    <nav class="jump-nav" aria-label="Section links">
+      <div class="jump-group jump-group-clusters"><span class="jump-group-label">Clusters</span><a href="#section-traction">Fresh Traction</a>
+<a href="#cluster-agents">Coding Agents</a>
+<a href="#cluster-systems">Inference &amp; Kernels</a>
+<a href="#cluster-models">Models &amp; Evaluation</a></div>
+    </nav>
+  </header>
+
+  <div class="search-panel" role="search">
+    <div class="search-label">Search</div>
+    <input id="global-table-search" class="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="repo, topic, language, description">
+    <button id="global-search-clear" class="button" type="button" disabled>Clear</button>
+    <div class="sort-label">Sort by</div>
+    <button id="sort-stars" class="button" type="button">Stars</button>
+    <button id="sort-fresh" class="button active" type="button">Freshness</button>
+  </div>
+
+
+<section class="repo-section traction-section" id="section-traction" data-section>
+  <div class="section-header">
+    <div>
+      <h2><span class="section-mark section-mark-blue"></span>Established Repos With Fresh Traction</h2>
+      <p>Ranked by recent commits, freshness, stars, and forks so active projects with broad audiences rise first.</p>
+    </div>
+    <span class="count-pill">Top 25</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <colgroup>
+        <col class="col-traction-repository">
+        <col class="col-traction-language">
+        <col class="col-traction-description">
+        <col class="col-traction-cluster">
+        <col class="col-traction-github">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Repository</th>
+          <th>Language</th>
+          <th>Description</th>
+          <th>Cluster</th>
+          <th>GitHub</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr data-stars="8125" data-pushed="1793735173" data-name="kimi-code" data-cluster="agents">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/kimi-code" target="_blank" rel="noreferrer">kimi-code</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/kimi-code" target="_blank" rel="noreferrer">MoonshotAI/kimi-code</a></td>
+  <td><span class="tag tag-ts">TypeScript</span></td>
+  <td class="description-cell">Kimi Code CLI  —  The Starting Point for Next-Gen Agents<div class="topic-row"><button class="badge keyword-button" type="button" data-filter-keyword="Coding Agents" title="Filter by Coding Agents">Coding Agents</button></div></td>
+  <td><a class="cluster-pill cluster-link" href="#cluster-agents">Coding Agents</a></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 8.1k</span>
+      <span class="fork-count">⑂ 1.3k</span>
+      <span class="commit-count">⟳ 1.8k</span>
+    </div>
+    <span class="last-updated">⏱ Nov 03, 2026</span>
+    <div class="activity-block" aria-label="Recent activity score 242">
+      <div class="activity-bar"><span style="width: 100%"></span></div>
+      <div class="activity-meta">
+        <span>153 commits / 30d</span>
+        <span>score 242</span>
+      </div>
+    </div>
+  </td>
+</tr>
+<tr data-stars="1295" data-pushed="1793029324" data-name="flashkda" data-cluster="systems">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/FlashKDA" target="_blank" rel="noreferrer">FlashKDA</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/FlashKDA" target="_blank" rel="noreferrer">MoonshotAI/FlashKDA</a></td>
+  <td><span class="tag tag-cuda">Cuda</span></td>
+  <td class="description-cell">FlashKDA: high-performance Kimi Delta Attention kernels<div class="topic-row"></div></td>
+  <td><a class="cluster-pill cluster-link" href="#cluster-systems">Inference &amp; Kernels</a></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 1.3k</span>
+      <span class="fork-count">⑂ 131</span>
+      <span class="commit-count">⟳ 12</span>
+    </div>
+    <span class="last-updated">⏱ Oct 26, 2026</span>
+    <div class="activity-block" aria-label="Recent activity score 52">
+      <div class="activity-bar"><span style="width: 22%"></span></div>
+      <div class="activity-meta">
+        <span>2 commits / 30d</span>
+        <span>score 52</span>
+      </div>
+    </div>
+  </td>
+</tr>
+<tr data-stars="1022" data-pushed="1792645816" data-name="checkpoint-engine" data-cluster="systems">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/checkpoint-engine" target="_blank" rel="noreferrer">checkpoint-engine</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/checkpoint-engine" target="_blank" rel="noreferrer">MoonshotAI/checkpoint-engine</a></td>
+  <td><span class="tag tag-py">Python</span></td>
+  <td class="description-cell">Checkpoint-engine is a simple middleware to update model weights in LLM inference engines<div class="topic-row"><button class="badge keyword-button" type="button" data-filter-keyword="Inference &amp; Kernels" title="Filter by Inference &amp; Kernels">Inference &amp; Kernels</button><button class="badge keyword-button" type="button" data-filter-keyword="Models &amp; Evaluation" title="Filter by Models &amp; Evaluation">Models &amp; Evaluation</button></div></td>
+  <td><a class="cluster-pill cluster-link" href="#cluster-systems">Inference &amp; Kernels</a></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 1k</span>
+      <span class="fork-count">⑂ 116</span>
+      <span class="commit-count">⟳ 69</span>
+    </div>
+    <span class="last-updated">⏱ Oct 22, 2026</span>
+    <div class="activity-block" aria-label="Recent activity score 40">
+      <div class="activity-bar"><span style="width: 17%"></span></div>
+      <div class="activity-meta">
+        <span>1 commits / 30d</span>
+        <span>score 40</span>
+      </div>
+    </div>
+  </td>
+</tr>
+<tr data-stars="1200" data-pushed="1791796697" data-name="moonep" data-cluster="systems">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/MoonEP" target="_blank" rel="noreferrer">MoonEP</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/MoonEP" target="_blank" rel="noreferrer">MoonshotAI/MoonEP</a></td>
+  <td><span class="tag tag-py">Python</span></td>
+  <td class="description-cell">MoonEP: A Perfectly Balanced Expert Parallelism Library via Dynamic Redundant Experts<div class="topic-row"><button class="badge keyword-button" type="button" data-filter-keyword="Inference &amp; Kernels" title="Filter by Inference &amp; Kernels">Inference &amp; Kernels</button></div></td>
+  <td><a class="cluster-pill cluster-link" href="#cluster-systems">Inference &amp; Kernels</a></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 1.2k</span>
+      <span class="fork-count">⑂ 148</span>
+      <span class="commit-count">⟳ 11</span>
+    </div>
+    <span class="last-updated">⏱ Oct 12, 2026</span>
+    <div class="activity-block" aria-label="Recent activity score 20">
+      <div class="activity-bar"><span style="width: 8%"></span></div>
+      <div class="activity-meta">
+        <span>2 commits / 30d</span>
+        <span>score 20</span>
+      </div>
+    </div>
+  </td>
+</tr>
+<tr data-stars="9045" data-pushed="1786011448" data-name="kimi-k3" data-cluster="models">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/Kimi-K3" target="_blank" rel="noreferrer">Kimi-K3</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/Kimi-K3" target="_blank" rel="noreferrer">MoonshotAI/Kimi-K3</a></td>
+  <td><span class="tag tag-mixed">Mixed</span></td>
+  <td class="description-cell">Open Frontier Intelligence<div class="topic-row"></div></td>
+  <td><a class="cluster-pill cluster-link" href="#cluster-models">Models &amp; Evaluation</a></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 9k</span>
+      <span class="fork-count">⑂ 772</span>
+      <span class="commit-count">⟳ 9</span>
+    </div>
+    <span class="last-updated">⏱ Aug 06, 2026</span>
+    <div class="activity-block" aria-label="Recent activity score 0">
+      <div class="activity-bar"><span style="width: 4%"></span></div>
+      <div class="activity-meta">
+        <span>0 commits / 30d</span>
+        <span>score 0</span>
+      </div>
+    </div>
+  </td>
+</tr>
+<tr data-stars="2323" data-pushed="1786012963" data-name="kimi-k2.5" data-cluster="models">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/Kimi-K2.5" target="_blank" rel="noreferrer">Kimi-K2.5</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/Kimi-K2.5" target="_blank" rel="noreferrer">MoonshotAI/Kimi-K2.5</a></td>
+  <td><span class="tag tag-mixed">Mixed</span></td>
+  <td class="description-cell">Open Visual Agentic Intelligence<div class="topic-row"></div></td>
+  <td><a class="cluster-pill cluster-link" href="#cluster-models">Models &amp; Evaluation</a></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 2.3k</span>
+      <span class="fork-count">⑂ 326</span>
+      <span class="commit-count">⟳ 3</span>
+    </div>
+    <span class="last-updated">⏱ Aug 06, 2026</span>
+    <div class="activity-block" aria-label="Recent activity score 0">
+      <div class="activity-bar"><span style="width: 4%"></span></div>
+      <div class="activity-meta">
+        <span>0 commits / 30d</span>
+        <span>score 0</span>
+      </div>
+    </div>
+  </td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<section class="repo-section" id="cluster-agents" data-section>
+  <div class="section-header">
+    <div>
+      <h2><span class="section-mark section-mark-orange"></span>Coding Agents</h2>
+      <p>Coding Agents projects from Moonshot AI Showing all qualifying repositories in this cluster by stars.</p>
+    </div>
+    <span class="count-pill">1 repos</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <colgroup>
+        <col class="col-repository">
+        <col class="col-language">
+        <col class="col-description">
+        <col class="col-github">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Repository</th>
+          <th>Language</th>
+          <th>Description</th>
+          <th>GitHub</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr data-stars="8125" data-pushed="1793735173" data-name="kimi-code" data-cluster="agents">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/kimi-code" target="_blank" rel="noreferrer">kimi-code</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/kimi-code" target="_blank" rel="noreferrer">MoonshotAI/kimi-code</a></td>
+  <td><span class="tag tag-ts">TypeScript</span></td>
+  <td class="description-cell">Kimi Code CLI  —  The Starting Point for Next-Gen Agents<div class="topic-row"><button class="badge keyword-button" type="button" data-filter-keyword="Coding Agents" title="Filter by Coding Agents">Coding Agents</button></div></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 8.1k</span>
+      <span class="fork-count">⑂ 1.3k</span>
+      <span class="commit-count">⟳ 1.8k</span>
+    </div>
+    <span class="last-updated">⏱ Nov 03, 2026</span>
+  </td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<section class="repo-section" id="cluster-systems" data-section>
+  <div class="section-header">
+    <div>
+      <h2><span class="section-mark section-mark-cyan"></span>Inference &amp; Kernels</h2>
+      <p>Inference &amp; Kernels projects from Moonshot AI Showing all qualifying repositories in this cluster by stars.</p>
+    </div>
+    <span class="count-pill">3 repos</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <colgroup>
+        <col class="col-repository">
+        <col class="col-language">
+        <col class="col-description">
+        <col class="col-github">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Repository</th>
+          <th>Language</th>
+          <th>Description</th>
+          <th>GitHub</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr data-stars="1295" data-pushed="1793029324" data-name="flashkda" data-cluster="systems">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/FlashKDA" target="_blank" rel="noreferrer">FlashKDA</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/FlashKDA" target="_blank" rel="noreferrer">MoonshotAI/FlashKDA</a></td>
+  <td><span class="tag tag-cuda">Cuda</span></td>
+  <td class="description-cell">FlashKDA: high-performance Kimi Delta Attention kernels<div class="topic-row"></div></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 1.3k</span>
+      <span class="fork-count">⑂ 131</span>
+      <span class="commit-count">⟳ 12</span>
+    </div>
+    <span class="last-updated">⏱ Oct 26, 2026</span>
+  </td>
+</tr>
+<tr data-stars="1200" data-pushed="1791796697" data-name="moonep" data-cluster="systems">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/MoonEP" target="_blank" rel="noreferrer">MoonEP</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/MoonEP" target="_blank" rel="noreferrer">MoonshotAI/MoonEP</a></td>
+  <td><span class="tag tag-py">Python</span></td>
+  <td class="description-cell">MoonEP: A Perfectly Balanced Expert Parallelism Library via Dynamic Redundant Experts<div class="topic-row"><button class="badge keyword-button" type="button" data-filter-keyword="Inference &amp; Kernels" title="Filter by Inference &amp; Kernels">Inference &amp; Kernels</button></div></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 1.2k</span>
+      <span class="fork-count">⑂ 148</span>
+      <span class="commit-count">⟳ 11</span>
+    </div>
+    <span class="last-updated">⏱ Oct 12, 2026</span>
+  </td>
+</tr>
+<tr data-stars="1022" data-pushed="1792645816" data-name="checkpoint-engine" data-cluster="systems">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/checkpoint-engine" target="_blank" rel="noreferrer">checkpoint-engine</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/checkpoint-engine" target="_blank" rel="noreferrer">MoonshotAI/checkpoint-engine</a></td>
+  <td><span class="tag tag-py">Python</span></td>
+  <td class="description-cell">Checkpoint-engine is a simple middleware to update model weights in LLM inference engines<div class="topic-row"><button class="badge keyword-button" type="button" data-filter-keyword="Inference &amp; Kernels" title="Filter by Inference &amp; Kernels">Inference &amp; Kernels</button><button class="badge keyword-button" type="button" data-filter-keyword="Models &amp; Evaluation" title="Filter by Models &amp; Evaluation">Models &amp; Evaluation</button></div></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 1k</span>
+      <span class="fork-count">⑂ 116</span>
+      <span class="commit-count">⟳ 69</span>
+    </div>
+    <span class="last-updated">⏱ Oct 22, 2026</span>
+  </td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<section class="repo-section" id="cluster-models" data-section>
+  <div class="section-header">
+    <div>
+      <h2><span class="section-mark section-mark-purple"></span>Models &amp; Evaluation</h2>
+      <p>Models &amp; Evaluation projects from Moonshot AI Showing all qualifying repositories in this cluster by stars.</p>
+    </div>
+    <span class="count-pill">2 repos</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <colgroup>
+        <col class="col-repository">
+        <col class="col-language">
+        <col class="col-description">
+        <col class="col-github">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Repository</th>
+          <th>Language</th>
+          <th>Description</th>
+          <th>GitHub</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr data-stars="9045" data-pushed="1786011448" data-name="kimi-k3" data-cluster="models">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/Kimi-K3" target="_blank" rel="noreferrer">Kimi-K3</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/Kimi-K3" target="_blank" rel="noreferrer">MoonshotAI/Kimi-K3</a></td>
+  <td><span class="tag tag-mixed">Mixed</span></td>
+  <td class="description-cell">Open Frontier Intelligence<div class="topic-row"></div></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 9k</span>
+      <span class="fork-count">⑂ 772</span>
+      <span class="commit-count">⟳ 9</span>
+    </div>
+    <span class="last-updated">⏱ Aug 06, 2026</span>
+  </td>
+</tr>
+<tr data-stars="2323" data-pushed="1786012963" data-name="kimi-k2.5" data-cluster="models">
+  <td><div class="repo-name"><img src="assets/images/github-moonshotai.svg" alt="" class="avatar"><a href="https://github.com/MoonshotAI/Kimi-K2.5" target="_blank" rel="noreferrer">Kimi-K2.5</a></div><a class="repo-slug" href="https://github.com/MoonshotAI/Kimi-K2.5" target="_blank" rel="noreferrer">MoonshotAI/Kimi-K2.5</a></td>
+  <td><span class="tag tag-mixed">Mixed</span></td>
+  <td class="description-cell">Open Visual Agentic Intelligence<div class="topic-row"></div></td>
+  <td class="github-cell">
+    <div class="gh-stats">
+      <span class="star-count">★ 2.3k</span>
+      <span class="fork-count">⑂ 326</span>
+      <span class="commit-count">⟳ 3</span>
+    </div>
+    <span class="last-updated">⏱ Aug 06, 2026</span>
+  </td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+
+  <footer class="footer">
+    <p><a href="https://github.com/moonshotai">Moonshot AI on GitHub</a></p>
+    <p style="text-align: center;">Generated from the GitHub API · Last updated: <span id="last-updated-date">2026-11-03 19:56 UTC</span></p>
+
+    <p class="rz-legal"><span>© 2026 <a href="https://zaufall.de/" target="_top">Robert Zaufall</a></span> · <a href="https://zaufall.de/datenschutz/" target="_blank" rel="noopener noreferrer">Datenschutz / Privacy Notice</a></p>
+  </footer>
+
+<script>
+  const searchInput = document.getElementById('global-table-search');
+  const clearButton = document.getElementById('global-search-clear');
+  const sortStars = document.getElementById('sort-stars');
+  const sortFresh = document.getElementById('sort-fresh');
+
+  function allRows() {
+    return Array.from(document.querySelectorAll('tbody tr'));
+  }
+
+  function applySearch() {
+    const query = searchInput.value.trim().toLowerCase();
+    let visibleRows = 0;
+    document.querySelectorAll('[data-section]').forEach(section => {
+      let sectionVisible = false;
+      section.querySelectorAll('tbody tr').forEach(row => {
+        const match = !query || row.textContent.toLowerCase().includes(query);
+        row.classList.toggle('hidden', !match);
+        if (match) {
+          sectionVisible = true;
+          visibleRows += 1;
+        }
+      });
+      section.classList.toggle('hidden', !sectionVisible);
+    });
+    clearButton.disabled = !query;
+    if (query && visibleRows === 0) {
+      document.querySelectorAll('[data-section], tbody tr').forEach(el => el.classList.remove('hidden'));
+    }
+  }
+
+  function sortTables(kind) {
+    const attr = kind === 'fresh' ? 'pushed' : 'stars';
+    document.querySelectorAll('tbody').forEach(tbody => {
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort((a, b) => Number(b.dataset[attr] || 0) - Number(a.dataset[attr] || 0));
+      rows.forEach(row => tbody.appendChild(row));
+    });
+    sortStars.classList.toggle('active', kind === 'stars');
+    sortFresh.classList.toggle('active', kind === 'fresh');
+    applySearch();
+  }
+
+  searchInput.addEventListener('input', applySearch);
+  clearButton.addEventListener('click', () => {
+    searchInput.value = '';
+    applySearch();
+    searchInput.focus();
+  });
+  document.addEventListener('click', event => {
+    const keyword = event.target.closest('[data-filter-keyword]');
+    if (!keyword) return;
+    const value = keyword.dataset.filterKeyword || keyword.textContent.trim();
+    searchInput.value = searchInput.value.trim().toLowerCase() === value.trim().toLowerCase() ? '' : value;
+    applySearch();
+    searchInput.focus({ preventScroll: true });
+  });
+  sortStars.addEventListener('click', () => sortTables('stars'));
+  sortFresh.addEventListener('click', () => sortTables('fresh'));
+  sortTables('fresh');
+</script>
+</body>
+</html>
