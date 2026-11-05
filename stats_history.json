@@ -69,6 +69,41 @@
           "stars": 8125
         }
       }
+    },
+    {
+      "date": "2026-11-05",
+      "repos": {
+        "MoonshotAI/FlashKDA": {
+          "forks": 132,
+          "pushed_at": "2026-10-26T15:42:04Z",
+          "stars": 1296
+        },
+        "MoonshotAI/Kimi-K2.5": {
+          "forks": 327,
+          "pushed_at": "2026-08-06T10:42:43Z",
+          "stars": 2322
+        },
+        "MoonshotAI/Kimi-K3": {
+          "forks": 777,
+          "pushed_at": "2026-08-06T10:17:28Z",
+          "stars": 9045
+        },
+        "MoonshotAI/MoonEP": {
+          "forks": 150,
+          "pushed_at": "2026-10-12T09:18:17Z",
+          "stars": 1201
+        },
+        "MoonshotAI/checkpoint-engine": {
+          "forks": 116,
+          "pushed_at": "2026-10-22T05:10:16Z",
+          "stars": 1022
+        },
+        "MoonshotAI/kimi-code": {
+          "forks": 1343,
+          "pushed_at": "2026-11-05T06:02:04Z",
+          "stars": 8131
+        }
+      }
     }
   ]
 }
