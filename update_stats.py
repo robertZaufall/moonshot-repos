@@ -44,7 +44,7 @@ TRACTION_DAYS = 30
 HISTORY_DAYS = 140
 GITHUB_API = "https://api.github.com"
 USER_AGENT = "moonshot-repos-catalog"
-AUTO_KEYWORD_TERMS = (('Coding Agents', ('kimi-code', 'agent', 'cli')), ('Inference & Kernels', ('flash', 'checkpoint', 'moonep')), ('Models & Evaluation', ('kimi-k', 'bench', 'model')))
+AUTO_KEYWORD_TERMS = (('Coding Agents', ('kimi-code', 'agent', 'cli')), ('Inference & Kernels', ('flash', 'checkpoint', 'moonep')), ('Models & Evaluation', ('kimi-k', 'bench', 'model', 'verifier')))
 SUBSTRING_KEYWORDS = set()
 README_DESCRIPTION_FALLBACKS = {"deepseek-recipe": "Recipes for DeepSeek model deployment and inference", "awesome-deepseek-agent": "Community resources for DeepSeek agents"}
 
@@ -70,7 +70,7 @@ class SourceSection:
 CLUSTERS = (
     Cluster('agents', 'Coding Agents', 'Coding Agents projects from Moonshot AI', 'orange', ('kimi-code', 'agent', 'cli')),
     Cluster('systems', 'Inference & Kernels', 'Inference & Kernels projects from Moonshot AI', 'cyan', ('flash', 'checkpoint', 'moonep')),
-    Cluster('models', 'Models & Evaluation', 'Models & Evaluation projects from Moonshot AI', 'purple', ('kimi-k', 'bench', 'model')),
+    Cluster('models', 'Models & Evaluation', 'Models & Evaluation projects from Moonshot AI', 'purple', ('kimi-k', 'bench', 'model', 'verifier')),
 )
 
 EXTRA_SECTIONS: tuple[SourceSection, ...] = ()
