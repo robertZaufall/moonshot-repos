@@ -426,7 +426,7 @@
         "MoonshotAI/Kimi-Vendor-Verifier": {
           "forks": 31,
           "pushed_at": "2026-11-07T13:16:29Z",
-          "stars": 207
+          "stars": 209
         },
         "MoonshotAI/MoonEP": {
           "forks": 153,
@@ -439,9 +439,9 @@
           "stars": 1025
         },
         "MoonshotAI/kimi-code": {
-          "forks": 1389,
-          "pushed_at": "2026-11-17T05:35:32Z",
-          "stars": 8245
+          "forks": 1390,
+          "pushed_at": "2026-11-17T12:09:02Z",
+          "stars": 8246
         }
       }
     }
