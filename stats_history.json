@@ -605,13 +605,13 @@
         },
         "MoonshotAI/Kimi-Vendor-Verifier": {
           "forks": 31,
-          "pushed_at": "2026-11-07T13:16:29Z",
+          "pushed_at": "2026-11-23T10:31:01Z",
           "stars": 211
         },
         "MoonshotAI/MoonEP": {
           "forks": 153,
           "pushed_at": "2026-10-12T09:18:17Z",
-          "stars": 1216
+          "stars": 1217
         },
         "MoonshotAI/checkpoint-engine": {
           "forks": 119,
@@ -620,8 +620,8 @@
         },
         "MoonshotAI/kimi-code": {
           "forks": 1402,
-          "pushed_at": "2026-11-23T06:03:16Z",
-          "stars": 8280
+          "pushed_at": "2026-11-23T12:15:42Z",
+          "stars": 8281
         }
       }
     }
